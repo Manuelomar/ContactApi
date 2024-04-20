@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Persons.Application.Common.Exceptions;
 using Persons.Application.Common.PaginationQuery;
 using Persons.Application.PersonEntity.Commands;
 using Persons.Application.PersonEntity.Queries;
@@ -7,13 +8,13 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Persons.API.Controllers.Person
 {
-    [Route("api/users")]
+    [Route("api/Person")]
     [ApiController]
-    public class PersonController:BaseController
+    public class PersonController : BaseController
     {
         [HttpGet]
         [SwaggerOperation(
-        Summary = "Gets users in the database")]
+        Summary = "Gets Person in the database")]
         public async Task<IActionResult> Get([FromQuery] PaginationQuery paginationQuery)
         {
             try
@@ -30,11 +31,43 @@ namespace Persons.API.Controllers.Person
 
         [HttpPost]
         [SwaggerOperation(
-          Summary = "Creates a new user")]
+          Summary = "Creates a new Person")]
         public async Task<IActionResult> Post([FromBody] CreatePersonCommand command)
         {
             var result = await Mediator.Send(command);
             return CreatedAtRoute(new { id = result.Id }, BaseResponse.Created(result));
+        }
+        [HttpDelete("{id}")]
+        [SwaggerOperation(
+           Summary = "Deletes user")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var command = new DeletePersonCommand(id)
+            {
+                Id = id
+            };
+
+            var result = await Mediator.Send(command);
+            return Ok(BaseResponse.Deleted(result));
+        }
+
+        [HttpPut("{id}")]
+        [SwaggerOperation(
+          Summary = "Updates existing Person")]
+        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdatePersonCommand command)
+        {
+            try
+            {
+                command.Id = id;
+                var result = await Mediator.Send(command);
+                return Ok(BaseResponse.Updated(result));
+            }
+            catch (NotFoundException) { throw; }
+
+            catch (Exception ex)
+            {
+                return BadRequest(BaseResponse.BadRequest(ex.Message));
+            }
         }
     }
 }

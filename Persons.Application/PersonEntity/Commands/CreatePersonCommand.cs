@@ -1,4 +1,5 @@
 ﻿using Persons.Application.Common.GenericHandler;
+using Persons.Application.PersonContactEntity.Commands;
 using Persons.Application.PersonEntity.Dtos;
 using Persons.Domain.Entities;
 
@@ -9,5 +10,7 @@ namespace Persons.Application.PersonEntity.Commands
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTime BirthDate { get; set; }
+        public string? Cedula { get; set; } = string.Empty;
+
     }
 }

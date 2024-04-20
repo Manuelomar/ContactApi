@@ -24,12 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="PersonContactEntity\Dtos\" />
-    <Folder Include="PersonContactEntity\Handlers\Commands\" />
-    <Folder Include="PersonContactEntity\Commands\" />
-    <Folder Include="PersonContactEntity\Queries\" />
-    <Folder Include="PersonContactEntity\Mappings\" />
-    <Folder Include="PersonContactEntity\Handlers\Queries\" />
     <Folder Include="PersonContactEntity\Validators\" />
   </ItemGroup>
 
